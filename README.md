@@ -1,4 +1,4 @@
-Dear MahMohammad Reza,
+Dear Mohammad Reza,
 
 We are delighted to have you in this stage of our evaluation pool. In order to fully demonstrate your exceptional abilities, it is recommended that you utilize the most current solutions. Our goal is to outline our anticipated project, which serves as the primary task for evaluation.
 Initially, a visualized concept is available on a Figma file that can be accessed locally via your personal Figma account. Additionally, a GraphQL server has been provided to enable access to the database for authentication and authorization purposes.
