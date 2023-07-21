@@ -1,25 +1,51 @@
+"use client";
+import { User } from "@/types/User";
+import { gql } from "@apollo/client";
+import apolloClient from "@/utils/apolloClient";
 import UsersCard from "@/components/UsersCard";
-import User from "@/types/User";
+import { useEffect, useState } from "react";
 
-const users: User[] = [
-  {
-    name: "User 1",
-    roles: [
-      { name: "Admin", isActive: true },
-      { name: "Editor", isActive: false },
-    ],
-  },
-  {
-    name: "User 2",
-    roles: [
-      { name: "Admin", isActive: false },
-      { name: "Editor", isActive: true },
-    ],
-  },
-  // Add more users here...
-];
+const USER_QUERY = gql`
+  query {
+    users {
+      results {
+        id
+        name
+        email
+        isAdmin
+        roles {
+          id
+          title
+        }
+      }
+    }
+  }
+`;
+
+const getUsers = async () => {
+  try {
+    const { data } = await apolloClient.query({
+      query: USER_QUERY,
+    });
+    const { users } = data;
+    const usersList = users.results;
+    return usersList;
+  } catch (error) {
+    console.error("Error during fetching users:", error.message);
+  }
+};
 
 const Home: React.FC = () => {
+  const [users, setUsers] = useState<User[]>([]);
+
+  const fetchUsers = async () => {
+    const users: User[] = await getUsers();
+    setUsers(users);
+  };
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+  if (!users) return null;
   return <UsersCard users={users} />;
 };
 

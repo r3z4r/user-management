@@ -5,7 +5,7 @@ const LOGIN_MUTATION = gql`
   mutation login($authUserInput: AuthUserInput!) {
     login(authUserInput: $authUserInput) {
       access_token
-      # Add other user fields you want to retrieve if needed
+      updatedAt
     }
   }
 `;
@@ -22,8 +22,9 @@ export const handleLogin = async (email: string, password: string) => {
       },
     });
     const { login } = data;
-    const accessToken = login.access_token;
+    const { access_token: accessToken, updatedAt } = login;
     localStorage.setItem("ACCESS_TOKEN", accessToken);
+    localStorage.setItem("UPDATED_AT", updatedAt);
     return accessToken;
   } catch (error) {
     console.error("Error during login:", error.message);

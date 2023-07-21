@@ -9,17 +9,24 @@ const Header = () => {
   const router = useRouter();
   const currentPath = usePathname().replace("/", "");
 
-  useLayoutEffect(() => {
-    const accessToken = localStorage.getItem("ACCESS_TOKEN");
-    if (accessToken) {
-      router.replace("/users");
-    }
-  }, []);
-
   const handleSignOut = () => {
+    localStorage.removeItem("UPDATED_AT");
     localStorage.removeItem("ACCESS_TOKEN");
     router.replace("/");
   };
+  useLayoutEffect(() => {
+    const updatedAt = localStorage.getItem("UPDATED_AT");
+    const accessToken = localStorage.getItem("ACCESS_TOKEN");
+    //check if more than one hour is passed from login and if so logout
+    const isExpired =
+      updatedAt &&
+      (new Date().getTime() - +localStorage.UPDATED_AT) / (1000 * 60 * 60) > 1;
+    if (isExpired || !accessToken) {
+      handleSignOut();
+    } else {
+      router.replace("/users");
+    }
+  }, []);
 
   return (
     <div className="w-full flex gap-3 px-3">
@@ -31,7 +38,7 @@ const Header = () => {
           <Image
             className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
             src="/darkMode.svg"
-            alt="Dark Mode"
+            alt="Switch to Dark Mode"
             width={20}
             height={20}
           />

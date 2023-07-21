@@ -1,11 +1,16 @@
-interface Role {
-  name: string;
-  isActive: boolean;
+export enum UserRoles {
+  admin = "ADMIN",
+  contentExpert = "CONTENT_EXPERT",
+  contentManager = "CONTENT_MANAGER",
+  courier = "COURIER",
+  customer = "CUSTOMER",
+  maintainer = "MAINTAINER",
+  saleseExpert = "SALES_EXPERT",
+  salesManager = "SALES_MANAGER",
 }
 
-interface User {
+export interface User {
   name: string;
-  roles: Role[];
+  email: string;
+  roles: UserRoles[];
 }
-
-export default User;
