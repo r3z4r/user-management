@@ -23,7 +23,7 @@ export const handleLogin = async (email: string, password: string) => {
     });
     const { login } = data;
     const accessToken = login.access_token;
-    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("ACCESS_TOKEN", accessToken);
     return accessToken;
   } catch (error) {
     console.error("Error during login:", error.message);
