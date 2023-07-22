@@ -6,7 +6,7 @@ import UsersCard from "@/components/UsersCard";
 import { useEffect, useState } from "react";
 
 const USER_QUERY = gql`
-  query {
+  query getUsers {
     users {
       results {
         id

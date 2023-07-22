@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-import { User, UserRoles } from "@/types/User";
+import { User } from "@/types/User";
 import Image from "next/image";
+import Roles from "./Roles";
 
 interface UserCardProps {
   users: User[];
@@ -45,30 +46,7 @@ const UserCard: React.FC<UserCardProps> = ({ users }) => {
                 />
               )}
             </div>
-            {activeRoleIndex === index && (
-              <>
-                <p className="m-2 text-sm">Roles:</p>
-                <div className="m-2 flex flex-wrap">
-                  {Object.keys(UserRoles).map((role, roleIndex) => (
-                    <label
-                      key={roleIndex}
-                      className="md:w-1/3 sm:w-1/2 w-full mb-1 cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        className="form-checkbox mr-1"
-                        checked={
-                          (user.roles || []).indexOf((UserRoles as any)[role]) >
-                          0
-                        }
-                        onChange={() => {}}
-                      />
-                      {role}
-                    </label>
-                  ))}
-                </div>
-              </>
-            )}
+            {activeRoleIndex === index && <Roles id={user.id} />}
           </div>
         ))
       ) : (
