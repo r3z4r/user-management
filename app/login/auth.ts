@@ -27,6 +27,9 @@ export const handleLogin = async (email: string, password: string) => {
     localStorage.setItem("UPDATED_AT", updatedAt);
     return accessToken;
   } catch (error) {
-    console.error("Error during login:", error.message);
+    let message;
+    if (error instanceof Error) message = error.message;
+    else message = String(error);
+    reportError({ message });
   }
 };

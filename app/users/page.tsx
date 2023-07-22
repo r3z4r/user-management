@@ -31,7 +31,10 @@ const getUsers = async () => {
     const usersList = users.results;
     return usersList;
   } catch (error) {
-    console.error("Error during fetching users:", error.message);
+    let message;
+    if (error instanceof Error) message = error.message;
+    else message = String(error);
+    reportError({ message });
   }
 };
 

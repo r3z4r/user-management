@@ -33,7 +33,7 @@ const Header = () => {
       <h2 className="text-3xl font-bold mb-6 text-black dark:text-white flex-grow">
         {currentPath === "users" ? "Users" : "Login"}
       </h2>
-      <button onClick={toggleTheme}>
+      <button onClick={toggleTheme as () => void}>
         {theme === "light" ? (
           <Image
             className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { handleLogin } from "./login/auth";
 import { useRouter } from "next/navigation";
 
@@ -9,7 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const onLogin = async (e) => {
+  const onLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const accessToken = await handleLogin(email, password);
     if (accessToken) {
