@@ -38,21 +38,9 @@ const handleRoleUpdate = async (
   rolesToRemove: UserRoles[]
 ) => {
   //creating the gql programmatically base on the roles
-  const variables: any = { userId };
+  const variables: { [x: string]: string } = { userId };
   let gqlVariables = "";
   let gqlQuery = "";
-  rolesToAssign.forEach((r, index) => {
-    const varName = `rolesToAssign${index}`;
-    gqlQuery =
-      gqlQuery +
-      `assignRole${index}: assignRole(assignRoleInput: { userId: $userId, role: $${varName} }){roles}
-        `;
-    gqlVariables =
-      gqlVariables +
-      `$${varName}: UserRoles!
-        `;
-    variables[varName] = r;
-  });
   rolesToRemove.forEach((r, index) => {
     const varName = `rolesToRemove${index}`;
     gqlQuery =
@@ -62,7 +50,19 @@ const handleRoleUpdate = async (
     gqlVariables =
       gqlVariables +
       `$${varName}: UserRoles! 
-    `;
+      `;
+    variables[varName] = r;
+  });
+  rolesToAssign.forEach((r, index) => {
+    const varName = `rolesToAssign${index}`;
+    gqlQuery =
+      gqlQuery +
+      `assignRole${index}: assignRole(assignRoleInput: { userId: $userId, role: $${varName} }){roles}
+          `;
+    gqlVariables =
+      gqlVariables +
+      `$${varName}: UserRoles!
+          `;
     variables[varName] = r;
   });
   const UPDATE_ROLES_BATCH_MUTATION = gql`
@@ -73,15 +73,6 @@ const handleRoleUpdate = async (
       ${gqlQuery}
     }
   `;
-  console.log(`
-  mutation UpdateRoles(
-    $userId: String!
-    ${gqlVariables}
-  ) {
-    ${gqlQuery}
-  }
-`);
-  console.log(variables);
   //mutating the roles
   try {
     const { data } = await apolloClient.mutate({
@@ -101,6 +92,9 @@ const handleRoleUpdate = async (
         });
       },
     });
+    const lastQueryRoles = `assignRole${rolesToAssign.length - 1}`;
+    const { roles } = data?.[lastQueryRoles];
+    return roles;
   } catch (error) {
     let message;
     if (error instanceof Error) message = error.message;
@@ -139,8 +133,11 @@ const Roles = ({ id }: { id: string }) => {
   const handleSave = async () => {
     const rolesToAssign = updatedRoles.filter((r) => !roles.includes(r));
     const rolesToRemove = roles.filter((r) => !updatedRoles.includes(r));
-    await handleRoleUpdate(id, rolesToAssign, rolesToRemove);
-    // fetchUserRoles(true); //toDo: fix the cacheing issue
+    const newRoles = await handleRoleUpdate(id, rolesToAssign, rolesToRemove);
+    if (Array.isArray(newRoles)) {
+      setRoles(newRoles);
+      setUpdatedRoles(newRoles);
+    }
   };
 
   return (
