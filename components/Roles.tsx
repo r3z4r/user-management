@@ -3,6 +3,12 @@ import { UserRoles, User } from "@/types/User";
 import apolloClient from "@/utils/apolloClient";
 import { gql } from "@apollo/client";
 
+interface UserRolesData {
+  userRoles: {
+    roles: UserRoles[];
+  };
+}
+
 const USER_ROLES_QUERY = gql`
   query GetUserRoles($userId: String!) {
     userRoles(id: $userId) {
@@ -81,14 +87,31 @@ const handleRoleUpdate = async (
         userId,
         ...variables,
       },
-      refetchQueries: [USER_ROLES_QUERY],
+      refetchQueries: [{ query: USER_ROLES_QUERY, variables: { userId } }],
       update: (cache) => {
+        const userRolesData = cache.readQuery<UserRolesData>({
+          query: USER_ROLES_QUERY,
+          variables: { userId },
+        });
+        const roles = userRolesData?.userRoles.roles ?? [];
         cache.evict({ id: `User:${userId}` });
         rolesToAssign.forEach((role) => {
           cache.evict({ id: `Role:${role}` });
         });
         rolesToRemove.forEach((role) => {
           cache.evict({ id: `Role:${role}` });
+        });
+        cache.writeQuery<UserRolesData>({
+          query: USER_ROLES_QUERY,
+          variables: { userId },
+          data: {
+            userRoles: {
+              ...userRolesData?.userRoles,
+              roles: [...rolesToAssign, ...roles].filter(
+                (role) => !rolesToRemove.includes(role)
+              ),
+            },
+          },
         });
       },
     });
