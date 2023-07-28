@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { UserRoles, User } from "@/types/User";
+import { UserRoles } from "@/types/User";
 import apolloClient from "@/utils/apolloClient";
 import { gql } from "@apollo/client";
 
