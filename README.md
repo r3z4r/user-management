@@ -1,5 +1,7 @@
 # User Management App
 
+<img src="app-ss.gif" alt="User Management App" width="500"/>
+
 Description:
 
 The User Management App is a web application built with React that allows administrators to manage user roles and permissions efficiently. It provides a user-friendly interface to view, assign, and unassign roles, and seamlessly syncs the changes with the server.
