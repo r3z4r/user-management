@@ -1,23 +1,22 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules
+
 /.pnp
 .pnp.js
 
 # testing
-/coverage
+webui/coverage
 
 # next.js
-/.next/
-/out/
+webui/.next/
+webui/out/
 
 # production
-/build
+webui/build
+server/dist
 
-# misc
-.DS_Store
-*.pem
 
 # debug
 npm-debug.log*
@@ -25,11 +24,13 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*.local
+*/.env*.local
+*/.env
 
 # vercel
-.vercel
+webui/.vercel
 
 # typescript
-*.tsbuildinfo
-next-env.d.ts
+*/*.tsbuildinfo
+webui/next-env.d.ts
+
