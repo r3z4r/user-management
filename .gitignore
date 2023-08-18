@@ -7,14 +7,14 @@ node_modules
 .pnp.js
 
 # testing
-webui/coverage
+ui/coverage
 
 # next.js
-webui/.next/
-webui/out/
+ui/.next/
+ui/out/
 
 # production
-webui/build
+ui/build
 server/dist
 
 
@@ -28,9 +28,9 @@ yarn-error.log*
 */.env
 
 # vercel
-webui/.vercel
+ui/.vercel
 
 # typescript
 */*.tsbuildinfo
-webui/next-env.d.ts
+ui/next-env.d.ts
 
