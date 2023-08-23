@@ -1,4 +1,4 @@
-const { Schema, model, models } = require("mongoose");
+import { Schema, model, models } from "mongoose";
 
 const UserSchema = new Schema({
   createdAt: { type: Date, require: [true, "This field is required!"] },
@@ -43,4 +43,4 @@ const RoleSchema = new Schema({
   //   user: [User!]!,
 });
 
-module.exports = models.User || model("User", UserSchema);
+export const User = models.User || model("User", UserSchema);
