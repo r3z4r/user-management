@@ -148,7 +148,7 @@ input AuthUserInput {
     roles: [Role!]
   
     # The user update information time
-    updatedAt: Float!
+    updatedAt: String!
   }
   
   enum UserRoles {
