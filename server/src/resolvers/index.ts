@@ -3,5 +3,13 @@ export const resolvers = {
     user: async (parent, args, context, info) => {
       return await context.models.User.getByEmail(args.email);
     },
+    users: async (parent, args, context, info) => {
+      return await context.models.User.getAll();
+    },
+  },
+  Mutation: {
+    login: async (parent, args, context, info) => {
+      return await context.models.User.getAll();
+    },
   },
 };

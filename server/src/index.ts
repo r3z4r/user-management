@@ -5,7 +5,7 @@ import { resolvers } from "./resolvers";
 import { typeDefs } from "./typedefs";
 import { connectToDB } from "./utils/db";
 
-import { generateUserModel } from "./models/user";
+import { generateUserModel, getUser } from "./models/user";
 
 const server = new ApolloServer({
   typeDefs,
@@ -19,7 +19,7 @@ const main = async () => {
     context: async ({ req }) => {
       const token = req.headers.authorization || "";
 
-      const user = {}; //getUser(token);
+      const user = getUser(token);
       if (!user)
         throw new GraphQLError("User is not authenticated", {
           extensions: {
@@ -40,19 +40,27 @@ const main = async () => {
 
 main();
 
+// enum UserRoles {
+//   admin = "ADMIN",
+//   contentExpert = "CONTENT_EXPERT",
+//   contentManager = "CONTENT_MANAGER",
+//   courier = "COURIER",
+//   customer = "CUSTOMER",
+//   maintainer = "MAINTAINER",
+//   saleseExpert = "SALES_EXPERT",
+//   salesManager = "SALES_MANAGER",
+// }
 // import { User } from "./models/user";
 // function generateDummyUsers(count) {
 //   const users = [];
 //   for (let i = 1; i <= count; i++) {
 //     users.push({
-//       // access_token: uuidv4(),
 //       createdAt: new Date(),
 //       createdBy: "admin",
 //       email: `user${i}@example.com`,
-//       isAdmin: i === 1 ? true : false,
 //       name: `User ${i}`,
 //       password: `password${i}`,
-//       roles: ["user"],
+//       roles: Object.values(UserRoles).splice(i % 8),
 //       updatedAt: new Date(),
 //     });
 //   }

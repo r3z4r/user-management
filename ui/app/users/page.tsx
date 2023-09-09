@@ -12,7 +12,6 @@ const USER_QUERY = gql`
         id
         name
         email
-        isAdmin
         roles {
           id
           title

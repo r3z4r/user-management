@@ -6,7 +6,6 @@ const UserSchema = new Schema({
     type: "UUID",
     default: () => randomUUID(),
   },
-  id: Schema.Types.ObjectId,
   createdAt: { type: Date, require: [true, "This field is required!"] },
   createdBy: { type: String, require: [true, "This field is required!"] },
   email: {
@@ -34,3 +33,10 @@ export const generateUserModel = ({ user }) => ({
     });
   },
 });
+
+export const getUser = async (token: string) => {
+  if (!token) return null;
+  return await User.findOne({
+    token: token,
+  });
+};

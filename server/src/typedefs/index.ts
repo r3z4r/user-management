@@ -1,22 +1,29 @@
 export const typeDefs = `#graphql
-input AuthUserInput {
-    # email of the user
-    email: String!
-  
-    # password of the user
-    password: String!
+  type Query {
+    user(email: String!): User
+    users(options: EntityQueryInput): PaginatedUsers!
+  }
+
+  type Mutation {
+    assignRole(assignRoleInput: EditRoleInput!): RolesForUser!
+    createUser(createUserInput: CreateUserInput!): UserWithTokens!
+    login(authUserInput: AuthUserInput!): UserWithTokens!
+    logout: Boolean!
+    removeRole(removeRoleInput: EditRoleInput!): Boolean!
+    removeUser(id: String!): String!
+    updateUser(updateUserInput: UpdateUserInput!): User!
+  }
+
+  input AuthUserInput {
+		email: String!
+		password: String!
   }
   
   input CreateUserInput {
-    # email of the user
-    email: String!
-  
-    # password of the user
-    password: String!
+		email: String!
+		password: String!
   }
-  
-  # A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-  scalar DateTime
+    scalar DateTime
   
   input EditRoleInput {
     role: UserRoles!
@@ -59,38 +66,14 @@ input AuthUserInput {
     operator: FilterOperator!
   }
   
-  type Mutation {
-    assignRole(assignRoleInput: EditRoleInput!): RolesForUser!
-    createUser(createUserInput: CreateUserInput!): UserWithTokens!
-    login(authUserInput: AuthUserInput!): UserWithTokens!
-    logout: Boolean!
-    removeRole(removeRoleInput: EditRoleInput!): Boolean!
-    removeUser(id: String!): String!
-    updateUser(updateUserInput: UpdateUserInput!): User!
-  }
-  
   type PaginatedUsers {
-    results: [User!]!
+    results: [User]!
     total: Int!
   }
   
   input PaginationOptionsInput {
     limit: Int!
     page: Int!
-  }
-  
-  type Query {
-    user(email: String!): User!
-    userRoles(id: String!): RolesForUser!
-    users(options: EntityQueryInput): PaginatedUsers!
-  }
-  
-  type Role {
-    createdAt: DateTime!
-    description: String!
-    id: String!
-    title: UserRoles!
-    updatedAt: DateTime!
   }
   
   type RolesForUser {
@@ -113,42 +96,22 @@ input AuthUserInput {
   }
   
   input UpdateUserInput {
-    # User email
-    email: String
+		email: String
     id: String!
-  
-    # User Name
-    name: String
-  
-    # User password
-    password: String
+		name: String
+		password: String
   }
   
   type User {
+    _id: String!
     access_token: String!
-  
-    # The user registered time
-    createdAt: String!
-  
-    # Created By
-    createdBy: String!
-  
-    # User email
-    email: String!
-    id: String!
-  
-    # User role
-    isAdmin: Boolean
-  
-    # User Name
+		createdAt: String!
+		createdBy: String!
+		email: String!
     name: String
-  
-    # User password
-    password: String
-    roles: [Role!]
-  
-    # The user update information time
-    updatedAt: String!
+		password: String
+    roles: [UserRoles!]
+		updatedAt: String!
   }
   
   enum UserRoles {
@@ -164,28 +127,14 @@ input AuthUserInput {
   
   type UserWithTokens {
     access_token: String
-  
-    # The user registered time
-    createdAt: String
-  
-    # Created By
-    createdBy: String
-  
-    # User email
-    email: String
+		createdAt: String
+		createdBy: String
+		email: String
     id: String
-  
-    # User role
-    isAdmin: Boolean
-  
-    # User Name
-    name: String
-  
-    # User password
-    password: String
-    roles: [Role!]
-  
-    # The user update information time
-    updatedAt: Float
+		isAdmin: Boolean
+		name: String
+		password: String
+    roles: [UserRoles!]
+		updatedAt: Float
   }  
 `;
