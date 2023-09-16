@@ -1,6 +1,5 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { GraphQLError } from "graphql";
 import { resolvers } from "./resolvers";
 import { typeDefs } from "./typedefs";
 import { connectToDB } from "./utils/db";
@@ -18,15 +17,7 @@ const main = async () => {
     listen: { port: 4000 },
     context: async ({ req }) => {
       const token = req.headers.authorization || "";
-
-      const user = getUser(token);
-      if (!user)
-        throw new GraphQLError("User is not authenticated", {
-          extensions: {
-            code: "UNAUTHENTICATED",
-            http: { status: 401 },
-          },
-        });
+      const user = await getUser(token);
       return {
         user,
         models: {
@@ -40,6 +31,7 @@ const main = async () => {
 
 main();
 
+/* inserting dummy users*/
 // enum UserRoles {
 //   admin = "ADMIN",
 //   contentExpert = "CONTENT_EXPERT",
@@ -69,7 +61,8 @@ main();
 
 // // Insert dummy users
 // async function insertDummyUsers() {
-//   const dummyUsers = generateDummyUsers(10);
+//   await connectToDB();
+//   const dummyUsers = generateDummyUsers(15);
 //   try {
 //     await User.insertMany(dummyUsers);
 //     console.log("Dummy users inserted successfully.");

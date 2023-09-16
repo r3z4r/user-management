@@ -1,15 +1,18 @@
 export const resolvers = {
   Query: {
-    user: async (parent, args, context, info) => {
-      return await context.models.User.getByEmail(args.email);
+    user: async (_, { email }, context) => {
+      return await context.models.User.getByEmail(email);
     },
-    users: async (parent, args, context, info) => {
+    users: async (_, __, context) => {
       return await context.models.User.getAll();
     },
   },
   Mutation: {
-    login: async (parent, args, context, info) => {
-      return await context.models.User.getAll();
+    login: async (_, { authUserInput }, context) => {
+      return await context.models.User.login(
+        authUserInput.email,
+        authUserInput.password
+      );
     },
   },
 };

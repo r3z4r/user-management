@@ -6,8 +6,8 @@ export const typeDefs = `#graphql
 
   type Mutation {
     assignRole(assignRoleInput: EditRoleInput!): RolesForUser!
-    createUser(createUserInput: CreateUserInput!): UserWithTokens!
-    login(authUserInput: AuthUserInput!): UserWithTokens!
+    createUser(createUserInput: CreateUserInput!): User!
+    login(authUserInput: AuthUserInput!): User!
     logout: Boolean!
     removeRole(removeRoleInput: EditRoleInput!): Boolean!
     removeUser(id: String!): String!
@@ -123,18 +123,5 @@ export const typeDefs = `#graphql
     MAINTAINER
     SALES_EXPERT
     SALES_MANAGER
-  }
-  
-  type UserWithTokens {
-    access_token: String
-		createdAt: String
-		createdBy: String
-		email: String
-    id: String
-		isAdmin: Boolean
-		name: String
-		password: String
-    roles: [UserRoles!]
-		updatedAt: Float
   }  
 `;

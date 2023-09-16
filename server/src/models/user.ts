@@ -1,4 +1,5 @@
 import { Schema, model, models } from "mongoose";
+import { GraphQLError } from "graphql";
 import { randomUUID } from "crypto";
 
 const UserSchema = new Schema({
@@ -24,13 +25,47 @@ export const User = models.User || model("User", UserSchema);
 
 export const generateUserModel = ({ user }) => ({
   getAll: async () => {
-    if (!user || !user.roles.includes("ADMIN")) return null;
+    if (!user || !user.roles.includes("ADMIN"))
+      throw new GraphQLError("User is not authenticated", {
+        extensions: {
+          code: "UNAUTHENTICATED",
+          http: { status: 401 },
+        },
+      });
     return await User.find({});
   },
   getByEmail: async (email) => {
+    if (!user || !user.roles.includes("ADMIN"))
+      throw new GraphQLError("User is not authenticated", {
+        extensions: {
+          code: "UNAUTHENTICATED",
+          http: { status: 401 },
+        },
+      });
     return await User.findOne({
       email: email,
     });
+  },
+  login: async (email, password) => {
+    console.log(email, password);
+    const loginInfo = await User.findOne({ email: email });
+    console.log(loginInfo);
+    if (!loginInfo)
+      throw new GraphQLError("User does not exist", {
+        extensions: {
+          code: "INVALID_CREDENTIALS",
+          http: { status: 500 },
+        },
+      });
+    if (loginInfo.password !== password) {
+      throw new GraphQLError("Incorrect password", {
+        extensions: {
+          code: "INVALID_CREDENTIALS",
+          http: { status: 200 },
+        },
+      });
+    }
+    return loginInfo;
   },
 });
 
