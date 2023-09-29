@@ -32,7 +32,12 @@ export const generateUserModel = ({ user }) => ({
           http: { status: 401 },
         },
       });
-    return await User.find({});
+    const total = await User.countDocuments({});
+    const users = await User.find({});
+    return {
+      results: users,
+      total,
+    };
   },
   getByEmail: async (email) => {
     if (!user || !user.roles.includes("ADMIN"))
@@ -47,9 +52,7 @@ export const generateUserModel = ({ user }) => ({
     });
   },
   login: async (email, password) => {
-    console.log(email, password);
     const loginInfo = await User.findOne({ email: email });
-    console.log(loginInfo);
     if (!loginInfo)
       throw new GraphQLError("User does not exist", {
         extensions: {

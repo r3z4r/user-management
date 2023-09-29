@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "compile": "tsc",
+    "compile": "tsc --sourcemap",
     "start": "pnpm compile && node ./dist/index.js"
   },
   "keywords": [],

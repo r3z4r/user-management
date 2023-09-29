@@ -2,9 +2,10 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { resolvers } from "./resolvers";
 import { typeDefs } from "./typedefs";
-import { connectToDB } from "./utils/db";
+import { connectToDB, disconnectMongo } from "./utils/db";
 
 import { generateUserModel, getUser } from "./models/user";
+import { disconnect } from "mongoose";
 
 const server = new ApolloServer({
   typeDefs,
@@ -27,6 +28,7 @@ const main = async () => {
     },
   });
   console.log(`🚀  Server ready at: ${url}`);
+  process.on("SIGINT", disconnectMongo.bind(null, { exit: true }));
 };
 
 main();

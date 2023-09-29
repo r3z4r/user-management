@@ -9,13 +9,10 @@ const USER_QUERY = gql`
   query getUsers {
     users {
       results {
-        id
+        _id
         name
         email
-        roles {
-          id
-          title
-        }
+        roles
       }
     }
   }
