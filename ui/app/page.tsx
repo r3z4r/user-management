@@ -23,14 +23,11 @@ const Login = () => {
     <div className="bg-white dark:bg-slate-800 shadow-md rounded-lg px-8 py-10">
       <form onSubmit={onLogin}>
         <div className="mb-4">
-          <label
-            className="block text-gray-700 dark:text-white text-sm font-bold mb-2"
-            htmlFor="email"
-          >
+          <label className="input-label" htmlFor="email">
             Email
           </label>
           <input
-            className="appearance-none border dark:border-none rounded w-full py-2 px-3 text-gray-700 dark:text-white dark:bg-slate-600 leading-tight focus:outline-none focus:shadow-outline"
+            className="input-primary"
             id="email"
             type="email"
             placeholder="Email"
@@ -40,14 +37,11 @@ const Login = () => {
           />
         </div>
         <div className="mb-6">
-          <label
-            className="block text-gray-700 dark:text-white text-sm font-bold mb-2"
-            htmlFor="password"
-          >
+          <label className="input-label" htmlFor="password">
             Password
           </label>
           <input
-            className="appearance-none border dark:border-none rounded w-full py-2 px-3 text-gray-700 dark:text-white dark:bg-slate-600 leading-tight focus:outline-none focus:shadow-outline"
+            className="input-primary"
             id="password"
             type="password"
             placeholder="Password"

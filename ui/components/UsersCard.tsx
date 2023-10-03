@@ -21,7 +21,7 @@ const UserCard: React.FC<UserCardProps> = ({ users }) => {
         users.map((user, index) => (
           <div
             key={index}
-            className="mb-4  rounded-lg p-2 border dark:border-none dark:bg-slate-600"
+            className="mb-4 rounded-lg p-2 border dark:border-none dark:bg-slate-600"
           >
             <div
               className="flex justify-between items-center cursor-pointer"
@@ -30,7 +30,7 @@ const UserCard: React.FC<UserCardProps> = ({ users }) => {
               <p className="font-semibold">{user.name || user.email}</p>
               {activeRoleIndex !== index ? (
                 <Image
-                  className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
+                  className="icon-main"
                   src="/downArrow.svg"
                   alt="Expand User"
                   width={16}
@@ -38,7 +38,7 @@ const UserCard: React.FC<UserCardProps> = ({ users }) => {
                 />
               ) : (
                 <Image
-                  className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
+                  className="icon-main"
                   src="/upArrow.svg"
                   alt="Collapse User"
                   width={16}

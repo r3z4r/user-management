@@ -36,7 +36,7 @@ const Header = () => {
       <button onClick={toggleTheme as () => void}>
         {theme === "light" ? (
           <Image
-            className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
+            className="icon-main"
             src="/darkMode.svg"
             alt="Switch to Dark Mode"
             width={20}
@@ -44,7 +44,7 @@ const Header = () => {
           />
         ) : (
           <Image
-            className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
+            className="icon-main"
             src="/lightMode.svg"
             alt="Switch to Light Mode"
             width={20}
@@ -55,7 +55,7 @@ const Header = () => {
       {currentPath === "users" && (
         <button onClick={handleSignOut}>
           <Image
-            className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
+            className="icon-main"
             src="/signOut.svg"
             alt="Sign Out"
             width={20}
