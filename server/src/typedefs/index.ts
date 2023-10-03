@@ -1,6 +1,6 @@
 export const typeDefs = `#graphql
   type Query {
-    user(email: String!): User
+    user(id: String!): User
     users(options: EntityQueryInput): PaginatedUsers!
   }
 

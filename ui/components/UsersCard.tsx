@@ -46,7 +46,7 @@ const UserCard: React.FC<UserCardProps> = ({ users }) => {
                 />
               )}
             </div>
-            {activeRoleIndex === index && <Roles id={user.id} />}
+            {activeRoleIndex === index && <Roles user={user} />}
           </div>
         ))
       ) : (

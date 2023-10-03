@@ -39,7 +39,7 @@ export const generateUserModel = ({ user }) => ({
       total,
     };
   },
-  getByEmail: async (email) => {
+  getById: async (id) => {
     if (!user || !user.roles.includes("ADMIN"))
       throw new GraphQLError("User is not authenticated", {
         extensions: {
@@ -48,7 +48,7 @@ export const generateUserModel = ({ user }) => ({
         },
       });
     return await User.findOne({
-      email: email,
+      _id: id,
     });
   },
   login: async (email, password) => {

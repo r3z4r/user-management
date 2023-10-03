@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { UserRoles } from "@/types/User";
+import { User, UserRoles } from "@/types/User";
 import apolloClient from "@/utils/apolloClient";
 import { gql } from "@apollo/client";
 
@@ -11,7 +11,7 @@ interface UserRolesData {
 
 const USER_ROLES_QUERY = gql`
   query GetUserRoles($userId: String!) {
-    userRoles(id: $userId) {
+    user(id: $userId) {
       roles
     }
   }
@@ -27,8 +27,8 @@ const getUserRoles = async (userId: string, clearCache: boolean) => {
       query: USER_ROLES_QUERY,
       variables: { userId },
     });
-    const { userRoles } = data;
-    const userRolesList = userRoles.roles;
+    const { user } = data;
+    const userRolesList = user.roles;
     return userRolesList;
   } catch (error) {
     let message;
@@ -126,12 +126,13 @@ const handleRoleUpdate = async (
   }
 };
 
-const Roles = ({ id }: { id: string }) => {
+const Roles = ({ user }: { user: User }) => {
+  const { _id, roles: initialRoles } = user;
   const [roles, setRoles] = useState<UserRoles[]>([]);
-  const [updatedRoles, setUpdatedRoles] = useState<UserRoles[]>([]);
-  //fetch the user roles
+  const [updatedRoles, setUpdatedRoles] = useState<UserRoles[]>(initialRoles);
+  // fetch the user roles
   const fetchUserRoles = async (clearCache = false) => {
-    const userRoles = await getUserRoles(id, clearCache);
+    const userRoles = await getUserRoles(_id, clearCache);
     setRoles(userRoles);
     setUpdatedRoles(userRoles);
   };
@@ -156,7 +157,7 @@ const Roles = ({ id }: { id: string }) => {
   const handleSave = async () => {
     const rolesToAssign = updatedRoles.filter((r) => !roles.includes(r));
     const rolesToRemove = roles.filter((r) => !updatedRoles.includes(r));
-    const newRoles = await handleRoleUpdate(id, rolesToAssign, rolesToRemove);
+    const newRoles = await handleRoleUpdate(_id, rolesToAssign, rolesToRemove);
     if (Array.isArray(newRoles)) {
       setRoles(newRoles);
       setUpdatedRoles(newRoles);
@@ -183,13 +184,13 @@ const Roles = ({ id }: { id: string }) => {
         ))}
       </div>
       <button
-        className="bg-blue-500 hover:bg-blue-700 text-white text-sm px-4 mx-2 rounded focus:outline-none focus:shadow-outline"
+        className="bg-blue-500 hover:bg-blue-700 text-white text-sm px-4 mx-2 rounded focus:outline-none"
         onClick={handleSave}
       >
         Save
       </button>
       <button
-        className="border border-blue-500 hover:shadow-xl dark:text-white  text-sm px-4 rounded focus:outline-none focus:shadow-outline"
+        className="border border-blue-500 hover:shadow-xl dark:text-white  text-sm px-4 rounded focus:outline-none"
         onClick={handleReset}
       >
         Reset

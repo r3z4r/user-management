@@ -1,7 +1,7 @@
 export const resolvers = {
   Query: {
-    user: async (_, { email }, context) => {
-      return await context.models.User.getByEmail(email);
+    user: async (_, { id }, context) => {
+      return await context.models.User.getById(id);
     },
     users: async (_, __, context) => {
       return await context.models.User.getAll();
