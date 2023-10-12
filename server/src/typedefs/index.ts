@@ -7,7 +7,7 @@ export const typeDefs = `#graphql
   type Mutation {
     assignRole(assignRoleInput: EditRoleInput!): RolesForUser!
     createUser(createUserInput: CreateUserInput!): User!
-    login(authUserInput: AuthUserInput!): User!
+    login(authUserInput: AuthUserInput!): AuthUserOutput!
     logout: Boolean!
     removeRole(removeRoleInput: EditRoleInput!): Boolean!
     removeUser(id: String!): String!
@@ -104,7 +104,6 @@ export const typeDefs = `#graphql
   
   type User {
     _id: String!
-    access_token: String!
 		createdAt: String!
 		createdBy: String!
 		email: String!
@@ -112,6 +111,10 @@ export const typeDefs = `#graphql
 		password: String
     roles: [UserRoles!]
 		updatedAt: String!
+  }
+
+  type AuthUserOutput {
+    access_token: String!
   }
   
   enum UserRoles {

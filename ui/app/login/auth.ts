@@ -5,7 +5,6 @@ const LOGIN_MUTATION = gql`
   mutation login($authUserInput: AuthUserInput!) {
     login(authUserInput: $authUserInput) {
       access_token
-      updatedAt
     }
   }
 `;
@@ -22,9 +21,9 @@ export const handleLogin = async (email: string, password: string) => {
       },
     });
     const { login } = data;
-    const { access_token: accessToken, updatedAt } = login;
+    const { access_token: accessToken, iat } = login;
     localStorage.setItem("ACCESS_TOKEN", accessToken);
-    localStorage.setItem("UPDATED_AT", updatedAt);
+    localStorage.setItem("ISSUED_AT", iat);
     return accessToken;
   } catch (error) {
     let message;

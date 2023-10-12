@@ -9,10 +9,10 @@ export const resolvers = {
   },
   Mutation: {
     login: async (_, { authUserInput }, context) => {
-      return await context.models.User.login(
-        authUserInput.email,
-        authUserInput.password
-      );
+      return await context.models.User.login(authUserInput);
+    },
+    assignRole: async (_, { assignRoleInput }, context) => {
+      return await context.models.User.assignRole(assignRoleInput);
     },
   },
 };

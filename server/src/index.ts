@@ -4,8 +4,8 @@ import { resolvers } from "./resolvers";
 import { typeDefs } from "./typedefs";
 import { connectToDB, disconnectMongo } from "./utils/db";
 
-import { generateUserModel, getUser } from "./models/user";
-import { disconnect } from "mongoose";
+import { generateUserModel } from "./models/user";
+import jwt from "jsonwebtoken";
 
 const server = new ApolloServer({
   typeDefs,
@@ -17,7 +17,8 @@ const main = async () => {
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
     context: async ({ req }) => {
-      const token = req.headers.authorization || "";
+      const authHeader = req.headers.authorization || "";
+      const token = authHeader && authHeader.split(/\s/)[1];
       const user = await getUser(token);
       return {
         user,
@@ -33,17 +34,23 @@ const main = async () => {
 
 main();
 
+const getUser = async (token: string) => {
+  if (!token) return null;
+  try {
+    return jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  } catch (error) {
+    console.log(error);
+    // throw new GraphQLError(err.message, {
+    //   extensions: {
+    //     code: "UNAUTHENTICATED",
+    //     http: { status: 401 },
+    //   },
+    // });
+  }
+};
+
 /* inserting dummy users*/
-// enum UserRoles {
-//   admin = "ADMIN",
-//   contentExpert = "CONTENT_EXPERT",
-//   contentManager = "CONTENT_MANAGER",
-//   courier = "COURIER",
-//   customer = "CUSTOMER",
-//   maintainer = "MAINTAINER",
-//   saleseExpert = "SALES_EXPERT",
-//   salesManager = "SALES_MANAGER",
-// }
+// import { UserRoles } from "./models/user";
 // import { User } from "./models/user";
 // function generateDummyUsers(count) {
 //   const users = [];

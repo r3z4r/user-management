@@ -10,17 +10,17 @@ const Header = () => {
   const currentPath = usePathname().replace("/", "");
 
   const handleSignOut = () => {
-    localStorage.removeItem("UPDATED_AT");
+    localStorage.removeItem("ISSUED_AT");
     localStorage.removeItem("ACCESS_TOKEN");
     router.replace("/");
   };
   useLayoutEffect(() => {
-    const updatedAt = localStorage.getItem("UPDATED_AT");
+    const issuedAt = localStorage.getItem("ISSUED_AT");
     const accessToken = localStorage.getItem("ACCESS_TOKEN");
     //check if more than one hour is passed from login and if so logout
     const isExpired =
-      updatedAt &&
-      (new Date().getTime() - +localStorage.UPDATED_AT) / (1000 * 60 * 60) > 1;
+      issuedAt &&
+      (new Date().getTime() - +localStorage.ISSUED_AT) / (1000 * 60 * 60) > 1;
     if (isExpired || !accessToken) {
       handleSignOut();
     } else {
