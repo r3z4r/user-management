@@ -3,26 +3,19 @@ import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import useDarkmode from "@/utils/useDarkMode";
 import { useLayoutEffect } from "react";
+import { handleSignOut } from "@/utils/auth";
 
 const Header = () => {
   const [theme, toggleTheme] = useDarkmode();
   const router = useRouter();
   const currentPath = usePathname().replace("/", "");
 
-  const handleSignOut = () => {
-    localStorage.removeItem("ISSUED_AT");
-    localStorage.removeItem("ACCESS_TOKEN");
-    router.replace("/");
-  };
   useLayoutEffect(() => {
-    const issuedAt = localStorage.getItem("ISSUED_AT");
     const accessToken = localStorage.getItem("ACCESS_TOKEN");
     //check if more than one hour is passed from login and if so logout
-    const isExpired =
-      issuedAt &&
-      (new Date().getTime() - +localStorage.ISSUED_AT) / (1000 * 60 * 60) > 1;
-    if (isExpired || !accessToken) {
+    if (!accessToken) {
       handleSignOut();
+      router.replace("/");
     } else {
       router.replace("/users");
     }

@@ -54,7 +54,8 @@ export const generateUserModel = ({ user }) => ({
     const { _id, roles } = loggedInUser;
     const access_token = jwt.sign(
       { _id, roles },
-      process.env.ACCESS_TOKEN_SECRET
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: 15 }
     );
     return { access_token: access_token };
   },
@@ -72,8 +73,20 @@ export const generateUserModel = ({ user }) => ({
         },
       });
     }
+    //TODO: make more performant
     const { roles } = await User.findOne({ _id: userId });
     return { id: userId, roles };
+  },
+  removeRole: async ({ role, userId }) => {
+    checkUserRole(user, UserRoles.admin);
+    const dbResponse = await User.updateOne(
+      { _id: userId },
+      { $pull: { roles: role } }
+    );
+    if (!dbResponse?.modifiedCount) {
+      return false;
+    }
+    return true;
   },
 });
 

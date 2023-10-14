@@ -115,6 +115,7 @@ const handleRoleUpdate = async (
         });
       },
     });
+    //change to boolean response
     const lastQueryRoles = `assignRole${rolesToAssign.length - 1}`;
     const { roles } = data?.[lastQueryRoles];
     return roles;
@@ -137,7 +138,7 @@ const Roles = ({ user }: { user: User }) => {
     setUpdatedRoles(userRoles);
   };
   useEffect(() => {
-    fetchUserRoles();
+    fetchUserRoles(true);
   }, []);
   const handleRolesChange = (
     e: ChangeEvent<HTMLInputElement>,

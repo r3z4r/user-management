@@ -14,5 +14,8 @@ export const resolvers = {
     assignRole: async (_, { assignRoleInput }, context) => {
       return await context.models.User.assignRole(assignRoleInput);
     },
+    removeRole: async (_, { removeRoleInput }, context) => {
+      return await context.models.User.removeRole(removeRoleInput);
+    },
   },
 };
