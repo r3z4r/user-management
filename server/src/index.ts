@@ -20,6 +20,13 @@ const main = async () => {
     context: async ({ req }) => {
       const authHeader = req.headers.authorization || "";
       const token = authHeader && authHeader.split(/\s/)[1];
+      if (!token && (req as any)?.body?.operationName !== "Login")
+        throw new GraphQLError("You are not authenticated", {
+          extensions: {
+            code: "UNAUTHENTICATED",
+            http: { status: 401 },
+          },
+        });
       const user = await getUser(token);
       return {
         user,

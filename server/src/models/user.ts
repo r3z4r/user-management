@@ -55,7 +55,7 @@ export const generateUserModel = ({ user }) => ({
     const access_token = jwt.sign(
       { _id, roles },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: 15 }
+      { expiresIn: 60 * 60 }
     );
     return { access_token: access_token };
   },
